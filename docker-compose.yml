@@ -1,0 +1,27 @@
+services:
+  account-service:
+    build:
+      context: .
+      dockerfile: src/AccountService/Dockerfile
+    ports:
+      - "7001:7001"
+
+  cashback-service:
+    build:
+      context: .
+      dockerfile: src/CashbackService/Dockerfile
+    ports:
+      - "7003:7003"
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: src/PaymentService/Dockerfile
+    ports:
+      - "7002:7002"
+    environment:
+      Services__AccountBaseUrl: http://account-service:7001
+      Services__CashbackBaseUrl: http://cashback-service:7003
+    depends_on:
+      - account-service
+      - cashback-service
